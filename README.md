@@ -36,7 +36,8 @@ This script is based on [ConSurf DB](http://bental.tau.ac.il/new_ConSurfDB/overv
 
 # Notes
 ## GZIP
-The output of the script is compressed. If you don't want it to be compressed, you can either pipe the output through gunzip or remove the last command (gzip) in calc_conservation.sh.
+The output of the script is compressed.   
+If you don't want it to be compressed, you can either pipe the output through gunzip or remove the last command (gzip) in calc_conservation.sh.
 
 ## Output
 The output should be in the following format:  
