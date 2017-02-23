@@ -7,21 +7,21 @@ This script is based on [ConSurf DB](http://bental.tau.ac.il/new_ConSurfDB/overv
 
 ## Preliminaries
 ### Installing all necessary tools
-1) Download BLAST+ suite from [here](ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/).
-2) Install/unpack the BLAST+ archive and make sure your directory is PATH.
-3) Download CD-HIT from [here](https://github.com/weizhongli/cdhit/releases).
-4) Unpack CD-HIT archive, run make command and make sure cd-hit is in PATH.
-5) Download MUSCLE from [here](http://www.drive5.com/muscle/downloads.htm).
-6) Unpack MUSCLE archive and add the directory to PATH.
-7) Download python script for Jensen-Shannon divergence method from [here](http://compbio.cs.princeton.edu/conservation/index.html).
-8) Finally, unpack the archive.
-9) Download and copy filter.awk, getCol.awk and calc_conservation.sh in the directory where the python script is located.
+1. Download BLAST+ suite from [here](ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/).
+2. Install/unpack the BLAST+ archive and make sure your directory is PATH.
+3. Download CD-HIT from [here](https://github.com/weizhongli/cdhit/releases).
+4. Unpack CD-HIT archive, run make command and make sure cd-hit is in PATH.
+5. Download MUSCLE from [here](http://www.drive5.com/muscle/downloads.htm).
+6. Unpack MUSCLE archive and add the directory to PATH.
+7. Download python script for Jensen-Shannon divergence method from [here](http://compbio.cs.princeton.edu/conservation/index.html).
+8. Finally, unpack the archive.
+9. Download and copy filter.awk, getCol.awk and calc_conservation.sh in the directory where the python script is located.
 
 ### Installing databases
-1) Download SwissProt and UniRef90 databases from [here](http://www.uniprot.org/downloads) in FASTA format.
-2) Create a directory where you want to store the databases.
-3) Add environmental variable BLASTDB={path to the directory}
-4) cd to this directory and run these commands. This will take quite a lot of time.
+1. Download SwissProt and UniRef90 databases from [here](http://www.uniprot.org/downloads) in FASTA format.
+2. Create a directory where you want to store the databases.
+3. Add environmental variable BLASTDB={path to the directory}
+4. cd to this directory and run these commands. This will take quite a lot of time.
 
 ```
     zcat {path to uniref90 database .gz file} | makeblastdb -out uniref90 -dbtype prot -title UniRef90 -parse_seqids
@@ -31,8 +31,8 @@ This script is based on [ConSurf DB](http://bental.tau.ac.il/new_ConSurfDB/overv
 5) Optional: Now you can delete the .gz database files.
 
 # Running the script
-1) cd to the directory where you copied calc_conservation.sh and the awk scripts.
-2) Run this command: ```./calc_conservation.sh {path to your fasta file}```
+1. cd to the directory where you copied calc_conservation.sh and the awk scripts.
+2. Run this command: ```./calc_conservation.sh {path to your fasta file}```
 
 # Notes
 ## GZIP
