@@ -52,7 +52,7 @@ echo ">separator" >> $conservationExtractorInput
 
 # Run conservation script (Jensen-Shannon divergence: http://compbio.cs.princeton.edu/conservation/)
 # Remove | head -n 1 | sed ... if you have more than chain in the fasta file
-python score_conservation.py $muscleResultFile  | cat $conservationExtractorInput - | ./getCol.awk | head -n 1 | sed 's/Score,//' | gzip
+python score_conservation.py $muscleResultFile  | cat $conservationExtractorInput - | ./getCol.awk | gzip
 
 #rm $muscleResultFile
 rm $modifiedInputFile
