@@ -14,39 +14,28 @@ This script is based on [ConSurf DB](http://bental.tau.ac.il/new_ConSurfDB/overv
 5. Download MUSCLE from [here](http://www.drive5.com/muscle/downloads.htm).
 6. Unpack MUSCLE archive and add the directory to PATH.
 7. Download python script for Jensen-Shannon divergence method from [here](http://compbio.cs.princeton.edu/conservation/index.html).
-8. Finally, unpack the archive.
-9. Download and copy filter.awk, getCol.awk and calc_conservation.sh in the directory where the python script is located.
+8. Finally, unpack the pipeline archive from this repository.
+9. Copy the archive contents to the directory where Python script for Jensen-Shannon divergence (`score_conservation.py`) is located.
 
 ### Installing databases
-1. Download SwissProt and UniRef90 databases from [here](http://www.uniprot.org/downloads) in FASTA format.
-2. Create a directory where you want to store the databases.
-3. Add environmental variable BLASTDB={path to the directory}
-4. cd to this directory and run these commands. This will take quite a lot of time.
+
+1. Create a directory where you want to store the databases.
+2. Add environmental variable `BLASTDB={path to the directory}`
+3. Change directory to BLASTDB directory and run these commands. Each command will download and parse one database. We recommend to use SwissProt and UniRef90, but using TrEBML instead of UniRef90 is also possible. Note that it will take a lot of time.
 
 ```
-    zcat {path to uniref90 database .gz file} | makeblastdb -out uniref90 -dbtype prot -title UniRef90 -parse_seqids
-    zcat {path to swissprot database .gz file} | makeblastdb -out swissprot -dbtype prot -title SwissProt -parse_seqids
-```
+curl {UniRef90 URI} | gunzip | makeblastdb -out uniref90 -dbtype prot -title UniRef90 -parse_seqids
 
-5) Optional: Now you can delete the .gz database files.
+curl {SwissProt URI} | gunzip | makeblastdb -out swissprot -dbtype prot -title SwissProt -parse_seqids
+
+curl {TrEMBL URI} | gunzip | makeblastdb -out trembl -dbtype prot -title TrEMBL -parse_seqids
+```
 
 # Running the script
-1. cd to the directory where you copied calc_conservation.sh and the awk scripts.
+1. cd to the directory where you copied `calc_conservation.sh`.
 2. Run this command: ```./calc_conservation.sh {path to your fasta file}```
 
-# Notes
-## GZIP
-The output of the script is compressed.   
-If you don't want it to be compressed, you can either pipe the output through gunzip or remove the last command (gzip) in calc_conservation.sh.
-
-## Output
-The output should be in the following format:  
-First line: Score: scores divided by command  
-Other lines: Query sequence header: Letter for aminoacids separated by commas.  
-
-First score corresponds to the first letter etc.
-
-## How it works
+# How it works
 PSIBLAST is ran with your fasta input on SwissProt database (1 iteration, eval=1e-5).   
 The result is filtered (min 80% coverage and seq identity between 30% and 95%), then clustered with CD-HIT (default parameters).   
 If we are left with less then 50 hits, repeat the same for UniRef90 database.  

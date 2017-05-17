@@ -10,8 +10,8 @@ blastSeq=$(tempfile)
 modifiedInputFile=$(tempfile)
 
 # change this if you don't want to create extra file with MSA.
-muscleResultFile=${file}.muscle.fasta
-conservationExtractorInput=$(tempfile)
+muscleResultFile=$(tempfile)
+conservationExtractorInput=${2:-${file}.muscle}
 
 # Function that searches a database and filters the results $1 - database name for psiblast
 search () {
@@ -39,23 +39,15 @@ numSeq=$(grep < $blastResFile '^>' | wc -l)
 sed < $file 's/^>/>query_sekvence|/' > $modifiedInputFile
 
 # Run muscle. Note we need to concat the query sequence in order to get its conservation later.
-cat $blastResFile $modifiedInputFile | muscle > $muscleResultFile
+cat $blastResFile $modifiedInputFile | muscle -quiet > $muscleResultFile
 
-# conservationExtractorInput should look somewhat like this:
-# number: >Sequence header 
-# .
-# query sequence has query_sekvence prefix that will be removed later in awk script.
-# .
-grep < $muscleResultFile '^>' | nl > $conservationExtractorInput
-# >separator for awk to know that this is EOF
-echo ">separator" >> $conservationExtractorInput
+awk -f sortMuscleOutput.awk < $muscleResultFile > $conservationExtractorInput
 
 # Run conservation script (Jensen-Shannon divergence: http://compbio.cs.princeton.edu/conservation/)
-# Remove | head -n 1 | sed ... if you have more than chain in the fasta file
-python score_conservation.py $muscleResultFile  | cat $conservationExtractorInput - | ./getCol.awk | gzip
+python score_conservation.py $conservationExtractorInput # - | ./getCol.awk | head -n 1 | sed 's/Score,//' | gzip
 
-#rm $muscleResultFile
+rm $muscleResultFile
 rm $modifiedInputFile
 rm $blastSeq
 rm $blastResFile
-rm $conservationExtractorInput
+#rm $conservationExtractorInput
